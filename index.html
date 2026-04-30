@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VoteSecure — Fair Online Voting</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="root" id="root">
+
+  <!-- AUTH -->
+  <div id="screen-auth" class="screen active">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="logo-icon">🗳️</div>
+        <h1>VoteSecure</h1>
+        <p>Fair, transparent, one vote per person</p>
+      </div>
+      <div class="tabs" id="auth-tabs">
+        <div class="tab active" onclick="switchAuthTab('login')">Sign in</div>
+        <div class="tab" onclick="switchAuthTab('register')">Register</div>
+      </div>
+      <div id="login-form">
+        <div class="field"><label>Email</label><input id="li-email" type="email" placeholder="you@example.com"/></div>
+        <div class="field"><label>Password</label><input id="li-pass" type="password" placeholder="••••••••"
+          onkeydown="if(event.key==='Enter')doLogin()"/></div>
+        <div id="li-err" class="err" style="display:none"></div>
+        <button id="btn-login" class="btn primary full" onclick="doLogin()">Sign in</button>
+        <p class="hint">Admin: admin@vote.com / admin123</p>
+      </div>
+      <div id="register-form" style="display:none">
+        <div class="field"><label>Full name</label><input id="rg-name" placeholder="Your name"/></div>
+        <div class="field"><label>Email</label><input id="rg-email" type="email" placeholder="you@example.com"/></div>
+        <div class="field"><label>Password</label><input id="rg-pass" type="password" placeholder="min 6 characters"
+          onkeydown="if(event.key==='Enter')doRegister()"/></div>
+        <div id="rg-err" class="err" style="display:none"></div>
+        <div id="rg-ok"  class="ok"  style="display:none"></div>
+        <button id="btn-register" class="btn primary full" onclick="doRegister()">Create account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOTER -->
+  <div id="screen-voter" class="screen">
+    <nav class="navbar">
+      <div class="navbar-brand"><span>🗳️</span> VoteSecure</div>
+      <div class="navbar-right">
+        <div class="avatar" id="voter-avatar">U</div>
+        <span class="username" id="voter-name-lbl"></span>
+        <button class="btn sm" onclick="logout()">Sign out</button>
+      </div>
+    </nav>
+    <div id="voter-poll-view" style="display:none"></div>
+    <div id="voter-list-view">
+      <div class="section-header"><h2>Active polls</h2>
+        <button class="btn sm" onclick="loadVoterPolls()">↻ Refresh</button>
+      </div>
+      <div id="voter-polls-list"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="screen-admin" class="screen">
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <span>🗳️</span> VoteSecure
+        <span class="badge badge-admin">Admin</span>
+      </div>
+      <div class="navbar-right">
+        <div class="avatar admin-avatar">A</div>
+        <button class="btn sm" onclick="logout()">Sign out</button>
+      </div>
+    </nav>
+    <div class="tabs" id="admin-tabs">
+      <div class="tab active" onclick="switchAdminTab('polls')">My polls</div>
+      <div class="tab" onclick="switchAdminTab('create')">Create poll</div>
+    </div>
+    <div id="admin-polls">
+      <div style="display:flex;justify-content:flex-end;margin-bottom:.75rem">
+        <button class="btn sm" onclick="loadAdminPolls()">↻ Refresh</button>
+      </div>
+      <div id="admin-poll-list"></div>
+    </div>
+    <div id="admin-create" style="display:none">
+      <div class="card">
+        <div class="card-header"><span class="card-title">New poll</span></div>
+        <div class="field">
+          <label>Poll question</label>
+          <input id="new-q" placeholder="e.g. Which feature should we build next?"/>
+        </div>
+        <div class="field">
+          <label>Options</label>
+          <div id="options-list">
+            <div class="option-row"><input class="opt-inp" placeholder="Option A"/><button class="btn sm icon-btn" onclick="removeOpt(this)">✕</button></div>
+            <div class="option-row"><input class="opt-inp" placeholder="Option B"/><button class="btn sm icon-btn" onclick="removeOpt(this)">✕</button></div>
+          </div>
+          <button class="btn sm add-opt-btn" onclick="addOpt()">+ Add option</button>
+        </div>
+        <div id="create-err" class="err" style="display:none"></div>
+        <div id="create-ok"  class="ok"  style="display:none"></div>
+        <button id="btn-create" class="btn primary" onclick="createPoll()">Create poll</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script src="app.js"></script>
+</body>
+</html>
